@@ -3,11 +3,21 @@ import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Link, Route, Redirect, useLocation, useHistory } from "react-router-dom";
 
+const useStateWithLocalStorage = localStorageKey => {
+  const [value, setValue] = React.useState(
+    localStorage.getItem(localStorageKey) || ''
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem(localStorageKey, value);
+  }, [value]);
+
+  return [value, setValue];
+};
+
 const Router = () => {
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
-
-  console.log('Router:', loggedIn);
+  const [loggedIn, setLoggedIn] = useStateWithLocalStorage('loggedIn');
 
   return (
       <BrowserRouter>
