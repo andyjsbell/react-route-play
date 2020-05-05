@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Link, Route, Redirect, useLocation, useHistory } from "react-router-dom";
+import { BrowserRouter, Link, Route, Redirect, useLocation, useHistory, useParams } from "react-router-dom";
 
 const useStateWithLocalStorage = (localStorageKey) => {
   const [value, setValue] = React.useState(
@@ -27,12 +27,12 @@ const Router = () => {
           <Home/>
         </PrivateRoute>
 
-        <PrivateRoute loggedIn={loggedIn} path="/page1">
-          <Page1/>
+        <PrivateRoute loggedIn={loggedIn} path="/channel/:id">
+          <Channel/>
         </PrivateRoute>
 
-        <PrivateRoute loggedIn={loggedIn} path="/page2">
-          <Page2/>
+        <PrivateRoute loggedIn={loggedIn} path="/section/:id">
+          <Section/>
         </PrivateRoute>
 
         <Route path="/login">
@@ -68,18 +68,22 @@ const Home = () => {
   );
 };
 
-const Page1 = () => {
+const Channel = () => {
+  const {id} = useParams();
+
   return(
     <div>
-      <h3>Page 1</h3>
+      <h3>Channel {id || "No id"}</h3>
     </div>
   );
 };
 
-const Page2 = () => {
+const Section = () => {
+  const {id} = useParams();
+
   return(
     <div>
-      <h3>Page 2</h3>
+      <h3>Section {id || "No id"}</h3>
     </div>
   );
 };
@@ -95,8 +99,8 @@ const Nav = ({loggedIn, setLoggedIn}) => {
     return (
       <nav>
         <Link to='/'>Home</Link>
-        <Link to={{pathname: '/page1'}}>Page 1</Link>
-        <Link to={{pathname: '/page2'}}>Page 2</Link>
+        <Link to={{pathname: '/channel/1'}}>Channel 1</Link>
+        <Link to={{pathname: '/section/2'}}>Section 2</Link>
         <button onClick={() => logout()}>Logout</button>
       </nav>
     );
