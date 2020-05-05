@@ -15,7 +15,7 @@ const useStateWithLocalStorage = (localStorageKey) => {
   return [value, setValue];
 };
 
-const Router = () => {
+const App = () => {
 
   const [loggedIn, setLoggedIn] = useStateWithLocalStorage('loggedIn');
 
@@ -131,4 +131,4 @@ const PrivateRoute = ({ children, ...props }) => {
     );
 };
 
-export {Router}
+export {App}
