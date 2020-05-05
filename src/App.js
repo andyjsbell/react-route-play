@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Link, Route, Redirect, useLocation, useHistory, useParams } from "react-router-dom";
+import { BrowserRouter, Switch, Link, Route, Redirect, useLocation, useHistory, useParams } from "react-router-dom";
 
 const useStateWithLocalStorage = (localStorageKey) => {
   const [value, setValue] = React.useState(
@@ -22,23 +22,26 @@ const App = () => {
   return (
       <BrowserRouter>
         <Nav loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+        <Switch>
+          <PrivateRoute loggedIn={loggedIn} path="/" exact>
+            <Home/>
+          </PrivateRoute>
 
-        <PrivateRoute loggedIn={loggedIn} path="/" exact>
-          <Home/>
-        </PrivateRoute>
+          <PrivateRoute loggedIn={loggedIn} path="/channel/:id">
+            <Channel/>
+          </PrivateRoute>
 
-        <PrivateRoute loggedIn={loggedIn} path="/channel/:id">
-          <Channel/>
-        </PrivateRoute>
+          <PrivateRoute loggedIn={loggedIn} path="/section/:id">
+            <Section/>
+          </PrivateRoute>
 
-        <PrivateRoute loggedIn={loggedIn} path="/section/:id">
-          <Section/>
-        </PrivateRoute>
+          <Route path="/login">
+            <Login setLoggedIn={setLoggedIn}/>
+          </Route>
 
-        <Route path="/login">
-          <Login setLoggedIn={setLoggedIn}/>
-        </Route>
+          <Redirect to='/' />
 
+        </Switch>
       </BrowserRouter>
   )
 }
