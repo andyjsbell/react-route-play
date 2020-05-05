@@ -10,6 +10,25 @@ const Router = () => {
       </BrowserRouter>
   )
 }
+
+const Home = () => {
+    return(
+        <h3>Home</h3>
+    );
+};
+
+const Page1 = () => {
+    return(
+        <h3>Page1</h3>
+    );
+};
+
+const Page2 = () => {
+    return(
+        <h3>Page2</h3>
+    );
+};
+
 const App = () => {
   return (
       <nav>
