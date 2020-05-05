@@ -6,30 +6,42 @@ import { BrowserRouter, Link, Route } from "react-router-dom";
 const Router = () => {
   return (
       <BrowserRouter>
-        <Route path="/" component={App} />
+        <Route path="/" exact component={Home} />
+        <Route path="/page1" component={Page1} />
+        <Route path="/page2" exact component={Page2} />
+
       </BrowserRouter>
   )
 }
 
 const Home = () => {
     return(
-        <h3>Home</h3>
+        <div>
+                <Nav/>
+                <h3>Home</h3>
+        </div>
     );
 };
 
 const Page1 = () => {
     return(
-        <h3>Page1</h3>
+        <div>
+            <Nav/>
+            <h3>Page 1</h3>
+        </div>
     );
 };
 
 const Page2 = () => {
     return(
-        <h3>Page2</h3>
+        <div>
+            <Nav/>
+            <h3>Page 2</h3>
+        </div>
     );
 };
 
-const App = () => {
+const Nav = () => {
   return (
       <nav>
           <Link to='/'>Home</Link>
@@ -39,4 +51,4 @@ const App = () => {
   );
 }
 
-export {App, Router}
+export {Router}
