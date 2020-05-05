@@ -23,15 +23,15 @@ const App = () => {
       <BrowserRouter>
         <Nav credentials={credentials} setCredentials={setCredentials}/>
         <Switch>
-          <PrivateRoute loggedIn={credentials} path="/" exact>
+          <PrivateRoute credentials={credentials} path="/" exact>
             <Home/>
           </PrivateRoute>
 
-          <PrivateRoute loggedIn={credentials} path="/channel/:id">
+          <PrivateRoute credentials={credentials} path="/channel/:id">
             <Channel/>
           </PrivateRoute>
 
-          <PrivateRoute loggedIn={credentials} path="/section/:id">
+          <PrivateRoute credentials={credentials} path="/section/:id">
             <Section/>
           </PrivateRoute>
 
