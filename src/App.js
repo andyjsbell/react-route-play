@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Link, Route, Redirect, useLocation, useHistory } from "react-router-dom";
 
-const useStateWithLocalStorage = localStorageKey => {
+const useStateWithLocalStorage = (localStorageKey) => {
   const [value, setValue] = React.useState(
     localStorage.getItem(localStorageKey) || ''
   );
@@ -21,6 +21,7 @@ const Router = () => {
 
   return (
       <BrowserRouter>
+        <Nav loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
 
         <PrivateRoute loggedIn={loggedIn} path="/" exact>
           <Home/>
@@ -48,7 +49,7 @@ const Login = ({setLoggedIn}) => {
   const { from } = location.state || { from: { pathname: "/" } };
 
   const login = () => {
-    setLoggedIn(true);
+    setLoggedIn('true');
     history.replace(from);
   };
 
@@ -62,7 +63,6 @@ const Login = ({setLoggedIn}) => {
 const Home = () => {
   return(
     <div>
-      <Nav/>
       <h3>Home</h3>
     </div>
   );
@@ -71,7 +71,6 @@ const Home = () => {
 const Page1 = () => {
   return(
     <div>
-      <Nav/>
       <h3>Page 1</h3>
     </div>
   );
@@ -80,25 +79,35 @@ const Page1 = () => {
 const Page2 = () => {
   return(
     <div>
-      <Nav/>
       <h3>Page 2</h3>
     </div>
   );
 };
 
-const Nav = () => {
-  return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <Link to={{pathname: '/page1'}}>Page 1</Link>
-      <Link to={{pathname: '/page2'}}>Page 2</Link>
-    </nav>
-  );
+const Nav = ({loggedIn, setLoggedIn}) => {
+  console.log('Nav:', loggedIn);
+  console.log('Nav:', typeof(loggedIn));
+
+  const logout = () => {
+    setLoggedIn('false');
+  }
+  if (loggedIn === 'true') {
+    return (
+      <nav>
+        <Link to='/'>Home</Link>
+        <Link to={{pathname: '/page1'}}>Page 1</Link>
+        <Link to={{pathname: '/page2'}}>Page 2</Link>
+        <button onClick={() => logout()}>Logout</button>
+      </nav>
+    );
+  } else {
+    return null;
+  }
 }
 
 const PrivateRoute = ({ children, ...props }) => {
   console.log('PrivateRoute:', props.loggedIn);
-  const loggedIn = props.loggedIn;
+  const loggedIn = props.loggedIn === 'true';
   return (
         <Route
             {...props}
