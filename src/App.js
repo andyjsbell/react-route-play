@@ -17,26 +17,26 @@ const useStateWithLocalStorage = (localStorageKey) => {
 
 const App = () => {
 
-  const [loggedIn, setLoggedIn] = useStateWithLocalStorage('loggedIn');
+  const [credentials, setCredentials] = useStateWithLocalStorage('credentials');
 
   return (
       <BrowserRouter>
-        <Nav loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+        <Nav credentials={credentials} setCredentials={setCredentials}/>
         <Switch>
-          <PrivateRoute loggedIn={loggedIn} path="/" exact>
+          <PrivateRoute loggedIn={credentials} path="/" exact>
             <Home/>
           </PrivateRoute>
 
-          <PrivateRoute loggedIn={loggedIn} path="/channel/:id">
+          <PrivateRoute loggedIn={credentials} path="/channel/:id">
             <Channel/>
           </PrivateRoute>
 
-          <PrivateRoute loggedIn={loggedIn} path="/section/:id">
+          <PrivateRoute loggedIn={credentials} path="/section/:id">
             <Section/>
           </PrivateRoute>
 
           <Route path="/login">
-            <Login setLoggedIn={setLoggedIn}/>
+            <Login setCredentials={setCredentials}/>
           </Route>
 
           <Redirect to='/' />
@@ -46,13 +46,13 @@ const App = () => {
   )
 }
 
-const Login = ({setLoggedIn}) => {
+const Login = ({setCredentials}) => {
   const history = useHistory();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
 
   const login = () => {
-    setLoggedIn('true');
+    setCredentials({token:'hello'});
     history.replace(from);
   };
 
@@ -91,14 +91,12 @@ const Section = () => {
   );
 };
 
-const Nav = ({loggedIn, setLoggedIn}) => {
-  console.log('Nav:', loggedIn);
-  console.log('Nav:', typeof(loggedIn));
+const Nav = ({credentials, setCredentials}) => {
 
   const logout = () => {
-    setLoggedIn('false');
+    setCredentials(null);
   }
-  if (loggedIn === 'true') {
+  if (credentials && credentials.token !== '') {
     return (
       <nav>
         <Link to='/'>Home</Link>
@@ -113,8 +111,7 @@ const Nav = ({loggedIn, setLoggedIn}) => {
 }
 
 const PrivateRoute = ({ children, ...props }) => {
-  console.log('PrivateRoute:', props.loggedIn);
-  const loggedIn = props.loggedIn === 'true';
+  const loggedIn = props.credentials && props.credentials.token !== '';
   return (
         <Route
             {...props}
